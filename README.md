@@ -5,13 +5,14 @@ The cocos2dx version number is 2.2.0
 
 Use Gif widget just like a CCSprite:
 
-	char* name = "g1.gif";
-	GifBase *gif = InstantGif::create(name);
+	std::string name = "g2.gif";
+	name = CCFileUtils::sharedFileUtils()->fullPathForFilename(name.c_str());
+	GifBase *gif = InstantGif::create(name);//InstantGif ：While playing, while parsing
 	gif->setAnchorPoint(ccp(0,0));
 	gif->setPosition(ccp(0,0));
 	this->addChild(gif);
 
-	gif = CacheGif::create(name);
+	gif = CacheGif::create(name);//CacheGif: onece parse, and cache.
 	gif->setPosition(ccp(500,0));
 	gif->setScale(2);
 	this->addChild(gif);
