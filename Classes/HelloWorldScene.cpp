@@ -6,7 +6,7 @@
 USING_NS_CC;
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
-#define FILE_FORMAT ("/mnt/sdcard/g%d.gif") //On the Android platform, the resources are compressed in the asset directory. Therefore, the resources needed to be here must be files on the sd card
+#define FILE_FORMAT ("/mnt/sdcard/g%d.gif") //On the Android platform, the resources are compressed in the asset directory. Therefore, the resources must be files on the sd card
 #else
 #define FILE_FORMAT ("g%d.gif")
 #endif
