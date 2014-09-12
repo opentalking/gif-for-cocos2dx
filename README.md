@@ -16,5 +16,5 @@ Use Gif widget just like a CCSprite:
 	gif->setScale(2);
 	this->addChild(gif);
 
-Special attention should be paid to gif path which must be a  being a absolute path.
+Special attention should be paid to gif path which must be a absolute path.
 
