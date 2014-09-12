@@ -6,7 +6,7 @@
 USING_NS_CC;
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
-#define FILE_FORMAT ("/mnt/sdcard/g%d.gif")
+#define FILE_FORMAT ("/mnt/sdcard/g%d.gif") //On the Android platform, the resources are compressed in the asset directory. Therefore, the resources needed to be here must be files on the sd card
 #else
 #define FILE_FORMAT ("g%d.gif")
 #endif
@@ -99,7 +99,7 @@ void HelloWorld::menuCloseCallback(CCObject* pSender)
 	gif->setTag(1000);
 
 
-	gif = InstantGif::create(name.c_str());
+	gif = CacheGif::create(name.c_str());
 	gif->setAnchorPoint(ccp(0,0));
 	this->addChild(gif);
 	gif->setPosition(ccp(500,0));
