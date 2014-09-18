@@ -1,4 +1,4 @@
-# gif-for-cocos2dx
+gif-for-cocos2dx
 ===================
 
 This project is based on the gif_lib, and some codes reference to the android skia.
