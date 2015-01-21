@@ -11,13 +11,13 @@ USING_NS_CC;
 #define FILE_FORMAT ("g%d.gif")
 #endif
 
-CCScene* HelloWorld::scene()
+Scene* HelloWorld::createScene()
 {
     // 'scene' is an autorelease object
-    CCScene *scene = CCScene::create();
+    auto scene = Scene::create();
     
     // 'layer' is an autorelease object
-    HelloWorld *layer = HelloWorld::create();
+    auto layer = HelloWorld::create();
 
     // add layer as a child to scene
     scene->addChild(layer);
@@ -35,78 +35,76 @@ bool HelloWorld::init()
     {
         return false;
     }
-      
-	CCSize visibleSize = CCDirector::sharedDirector()->getVisibleSize();
-	CCPoint origin = CCDirector::sharedDirector()->getVisibleOrigin();
-
-	/////////////////////////////
-	// 2. add a menu item with "X" image, which is clicked to quit the program
-	//    you may modify it.
-
-	// add a "close" icon to exit the progress. it's an autorelease object
-	CCMenuItemImage *pCloseItem = CCMenuItemImage::create(
-		"CloseNormal.png",
-		"CloseSelected.png",
-		this,
-		menu_selector(HelloWorld::menuCloseCallback));
-
-	pCloseItem->setPosition(ccp(origin.x + visibleSize.width - pCloseItem->getContentSize().width/2 ,
-		origin.y + pCloseItem->getContentSize().height/2));
-
-	// create menu, it's an autorelease object
-	CCMenu* pMenu = CCMenu::create(pCloseItem, NULL);
-	pMenu->setPosition(CCPointZero);
-	this->addChild(pMenu, 1);
-
+    
+    auto visibleSize = Director::getInstance()->getVisibleSize();
+    auto origin = Director::getInstance()->getVisibleOrigin();
+    
+    /////////////////////////////
+    // 2. add a menu item with "X" image, which is clicked to quit the program
+    //    you may modify it.
+    
+    // add a "close" icon to exit the progress. it's an autorelease object
+    auto pCloseItem = MenuItemImage::create("CloseNormal.png",
+                                            "CloseSelected.png",
+                                            CC_CALLBACK_1(HelloWorld::menuCloseCallback,this));
+    
+    pCloseItem->setPosition(Vec2(origin.x + visibleSize.width - pCloseItem->getContentSize().width/2 ,
+                                origin.y + pCloseItem->getContentSize().height/2));
+    
+    // create menu, it's an autorelease object
+    auto pMenu = Menu::create(pCloseItem, nullptr);
+    pMenu->setPosition(Vec2::ZERO);
+    this->addChild(pMenu, 1);
+    
     return true;
 }
 
 int count = 1;
 void HelloWorld::update(float delta)
 {
-	count++ ;
-	if(count > 240)
-	{
-		this->removeAllChildren();
-	}
+    count++ ;
+    if(count > 240)
+    {
+        this->removeAllChildren();
+    }
 }
 
-void HelloWorld::menuCloseCallback(CCObject* pSender)
+void HelloWorld::menuCloseCallback(Ref* pSender)
 {
     count++;
-	while(this->getChildByTag(1000))
-	{
-		this->removeChildByTag(1000);
-	}
+    while(this->getChildByTag(1000))
+    {
+        this->removeChildByTag(1000);
+    }
     CCLOG("%s","------after remove gif-----------");
-    CCTextureCache::sharedTextureCache()->dumpCachedTextureInfo();
-	if(count % 2 != 0)
+    Director::getInstance()->getTextureCache()->getCachedTextureInfo();
+    if(count % 2 != 0)
     {
         return ;
     }
-	std::string name = CCString::createWithFormat(FILE_FORMAT,count/2)->getCString();
-	name = CCFileUtils::sharedFileUtils()->fullPathForFilename(name.c_str());
+    std::string name = CCString::createWithFormat(FILE_FORMAT,count/2)->getCString();
+    name = CCFileUtils::getInstance()->fullPathForFilename(name.c_str());
     
-	GifBase *gif = InstantGif::create(name.c_str());
-	if(gif == NULL)
-	{
+    GifBase *gif = InstantGif::create(name.c_str());
+    if(gif == NULL)
+    {
         CCLOG("%s","create gif failed");
-		return ;
-	}
-	gif->setAnchorPoint(ccp(0,0));
-	this->addChild(gif);
-	gif->setPosition(ccp(0,0));
-	gif->setTag(1000);
-
-
-	gif = CacheGif::create(name.c_str());
-	gif->setAnchorPoint(ccp(0,0));
-	this->addChild(gif);
-	gif->setPosition(ccp(500,0));
-	gif->setScale(2);
-	gif->setTag(1000);
-	CCLOG("%s","------after add gif-----------");
-    CCTextureCache::sharedTextureCache()->dumpCachedTextureInfo();
-
-	return ;
+        return ;
+    }
+    gif->setAnchorPoint(Vec2(0,0));
+    this->addChild(gif);
+    gif->setPosition(Vec2(0,0));
+    gif->setTag(1000);
+    
+    
+    gif = CacheGif::create(name.c_str());
+    gif->setAnchorPoint(Vec2(0,0));
+    this->addChild(gif);
+    gif->setPosition(Vec2(500,0));
+    gif->setScale(2);
+    gif->setTag(1000);
+    CCLOG("%s","------after add gif-----------");
+    Director::getInstance()->getTextureCache()->getCachedTextureInfo();
+    
+    return ;
 }

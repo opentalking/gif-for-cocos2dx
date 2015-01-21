@@ -23,18 +23,18 @@ CacheGif::~CacheGif()
 
 		do 
 		{
-			CCSpriteFrame* spriteFrame   = sprite->getSpriteFrame();
+			auto spriteFrame   = sprite->getSpriteFrame();
 			CC_BREAK_IF(spriteFrame == NULL);
 
-			bool spriteFrameInCache = CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(gifFrameName.c_str()) == spriteFrame;
+			bool spriteFrameInCache = SpriteFrameCache::getInstance()->getSpriteFrameByName(gifFrameName.c_str()) == spriteFrame;
             //1. just GifSprieFrame retain
             //2. CCSpriteFrameCache and GifSprieFrame retain
             //more. other gif CacheGif retain
-			if(spriteFrame->retainCount() == 1 || (spriteFrame->retainCount() ==2 && spriteFrameInCache))
+			if(spriteFrame->getReferenceCount() == 1 || (spriteFrame->getReferenceCount() ==2 && spriteFrameInCache))
 			{
-				CCTexture2D* texture = sprite->getSpriteFrame()->getTexture();
-				CCTextureCache::sharedTextureCache()->removeTexture(texture);
-				CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFramesFromTexture(texture);
+				auto texture = sprite->getSpriteFrame()->getTexture();
+                Director::getInstance()->getTextureCache()->removeTexture(texture);
+				SpriteFrameCache::getInstance()->removeSpriteFramesFromTexture(texture);
 
 			}
 		} while (0);
@@ -86,10 +86,10 @@ std::string CacheGif::getGifFrameName(int index)
 }
 
 // get CCSpriteFrame from cache or create with Bitmap's data
-CCSpriteFrame* CacheGif::getGifSpriteFrame(Bitmap* bm, int index)
+SpriteFrame* CacheGif::getGifSpriteFrame(Bitmap* bm, int index)
 {
 	std::string gifFrameName = getGifFrameName(index);
-	CCSpriteFrame* spriteFrame = CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(gifFrameName.c_str());
+	auto spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(gifFrameName.c_str());
 	if(spriteFrame != NULL)
 	{
 		return spriteFrame;
@@ -97,13 +97,13 @@ CCSpriteFrame* CacheGif::getGifSpriteFrame(Bitmap* bm, int index)
 	
 	do 
 	{	
-		CCTexture2D* texture = createTexture(bm,index,true);
+		auto texture = createTexture(bm,index,true);
 		CC_BREAK_IF(! texture);
 
-		spriteFrame = CCSpriteFrame::createWithTexture(texture, CCRectMake(0,0,texture->getContentSize().width, texture->getContentSize().height));
+		spriteFrame = SpriteFrame::createWithTexture(texture, Rect(0,0,texture->getContentSize().width, texture->getContentSize().height));
 		CC_BREAK_IF(! spriteFrame);
 
-		CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFrame(spriteFrame, gifFrameName.c_str());
+		SpriteFrameCache::getInstance()->addSpriteFrame(spriteFrame, gifFrameName.c_str());
 	} while (0);
 
 
@@ -177,7 +177,7 @@ void CacheGif::addGifSpriteFrame(GifFrame& gifFrame)
 		}
 	}
 
-	cocos2d::CCSpriteFrame* spriteFrame = getGifSpriteFrame(gifFrame.m_bm, gifFrame.m_frameData.m_index);
+	auto spriteFrame = getGifSpriteFrame(gifFrame.m_bm, gifFrame.m_frameData.m_index);
     
 	GifSprieFrame* frame = new GifSprieFrame;
 	frame->setFrameData(gifFrame.m_frameData);
@@ -187,7 +187,7 @@ void CacheGif::addGifSpriteFrame(GifFrame& gifFrame)
 	m_duration += frame->Duration();
 }
 
-void GifSprieFrame::setSpriteFrame(cocos2d::CCSpriteFrame* frame)
+void GifSprieFrame::setSpriteFrame(SpriteFrame* frame)
 {
 	CC_SAFE_RETAIN(frame);
 	CC_SAFE_RELEASE(m_frame);

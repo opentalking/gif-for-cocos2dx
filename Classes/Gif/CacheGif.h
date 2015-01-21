@@ -25,7 +25,7 @@ public:
 		m_data = data;
 	}
 
-	cocos2d::CCSpriteFrame* getSpriteFrame()
+	cocos2d::SpriteFrame* getSpriteFrame()
 	{
 		return m_frame;
 	}
@@ -40,11 +40,11 @@ public:
 		return m_data.m_duration;
 	}
 
-	void setSpriteFrame(cocos2d::CCSpriteFrame*);
+	void setSpriteFrame(cocos2d::SpriteFrame*);
 
 private:
 	FrameData m_data;
-	cocos2d::CCSpriteFrame* m_frame;
+	cocos2d::SpriteFrame* m_frame;
 };
 
 /*
@@ -66,7 +66,7 @@ public:
 	bool initGifData(GIFMovie* movie);
 protected:
 	virtual std::string getGifFrameName(int index);
-	virtual cocos2d::CCSpriteFrame* getGifSpriteFrame(Bitmap* bm, int index);
+	virtual cocos2d::SpriteFrame* getGifSpriteFrame(Bitmap* bm, int index);
 	void addGifSpriteFrame(GifFrame& frame);
 private:
 	int m_duration;

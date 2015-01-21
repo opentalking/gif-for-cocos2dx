@@ -28,7 +28,7 @@ bool InstantGif::init(FILE* f,const char* fileName)
 		scheduleUpdate();
 	}
 	m_movie->setTime(0);
-	cocos2d::CCTexture2D* texture = createTexture(m_movie->bitmap(),0,false);
+	cocos2d::Texture2D* texture = createTexture(m_movie->bitmap(),0,false);
 
 	return initWithTexture(texture);
 }
@@ -55,14 +55,14 @@ InstantGif::~InstantGif()
 {
 	CC_SAFE_DELETE(m_movie);
 	std::string texture = getGifFrameName(0);
-	cocos2d::CCTextureCache::sharedTextureCache()->removeTextureForKey(texture.c_str());
+    cocos2d::Director::getInstance()->getTextureCache()->removeTextureForKey(texture.c_str());
 }
 
 void InstantGif::updateGif(uint32_t delta)
 {
 	if(m_movie->appendTime(delta))
 	{
-		cocos2d::CCTexture2D* texture = createTexture(m_movie->bitmap(),0,false);
+		cocos2d::Texture2D* texture = createTexture(m_movie->bitmap(),0,false);
 		this->setTexture(texture);
 	}
 }
