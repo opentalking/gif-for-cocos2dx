@@ -3,11 +3,11 @@
 #include "cocos2d.h"
 #include "Bitmap.h"
 
-class GifBase : public cocos2d::CCSprite
+class GifBase : public cocos2d::Sprite
 {
 public:
 	virtual void updateGif(uint32_t delta) = 0;
-	virtual cocos2d::CCTexture2D* createTexture(Bitmap* bm, int index, bool getCache);
+	virtual cocos2d::Texture2D* createTexture(Bitmap* bm, int index, bool getCache);
 
 	virtual void update(float delta)
 	{
